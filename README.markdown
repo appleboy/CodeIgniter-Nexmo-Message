@@ -13,28 +13,53 @@ Please vist http://www.nexmo.com/how_it_works/index.html
 Installation
 =======================
 
-Copy files to your applicaiotn folder
-
-    $ cp config/nexmo.php application/config/
-    $ cp libries/nexmo.php application/libries/
-    $ cp controller/nexmo.php application/controller/
-
 Open config/nexmo.php and put your api key and secret
 
     $config['api_key'] = 'xxxxxx';
     $config['api_secret'] = 'xxxxxx';
 
-Open controller/nexmo.php and modified the following changes for sending message
+Send Text Message
 
     $from = 'xxxxxxxxxx';
     $to = 'xxxxxxxxxxxx';
     $message = array(
         'text' => 'test message'
     );
+    $response = $this->nexmo->send_message($from, $to, $message);
+    echo "<h1>Text Message</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
-Open browser and load the following URL
+Send Binary Message
 
-    http://your_host/example
+    $from = 'xxxxxxxx';
+    $to = 'xxxxxxxxxx';
+    $message = array(
+        'body' => 'body message',
+        'udh' => 'xxxxxxx'
+    );
+    $response = $this->nexmo->send_message($from, $to, $message);
+    echo "<h1>Binary Message</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+Send Wappush Message
+    
+    $from = 'xxxxxxxx';
+    $to = 'xxxxxxxxxx';
+    $message = array(
+        'title' => 'xxxxxx',
+        'url' => 'xxxxxxx',
+        'validity' => 'xxxxxx'
+    );
+    $response = $this->nexmo->send_message($from, $to, $message);
+    echo "<h1>Wappush Message</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+    
+Set response format: xml or json, default is json
+
+    $this->nexmo->set_format('json');
 
 Copyright
 =======================
