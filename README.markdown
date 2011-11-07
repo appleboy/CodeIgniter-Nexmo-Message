@@ -13,6 +13,12 @@ Please vist http://www.nexmo.com/how_it_works/index.html
 Installation
 =======================
 
+You can install via http://getsparks.org/packages/Nexmo-SMS-Message/versions/HEAD/show
+
+    $ php tools/spark install -v1.0.0 Nexmo-SMS-Message
+
+or referrer the following steps.
+
 Copy files to your applicaiotn folder
 
     $ cp config/nexmo.php application/config/
