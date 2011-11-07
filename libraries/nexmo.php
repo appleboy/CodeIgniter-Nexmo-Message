@@ -206,7 +206,7 @@ class Nexmo {
      *
      * @param string
      */       
-    private function d_print($msg)
+    public function d_print($msg)
     {
         echo '<pre>';
         print_r($msg);
@@ -219,7 +219,7 @@ class Nexmo {
      *
      * @param string
      */    
-    private function d_dump($msg)
+    public function d_dump($msg)
     {
         echo '<pre>';
         var_dump($msg);
