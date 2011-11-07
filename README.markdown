@@ -10,8 +10,13 @@ How It Works?
 
 Please vist http://www.nexmo.com/how_it_works/index.html
 
-Installation
+Usage
 =======================
+
+    // Load the spark
+    $this->load->spark('Nexmo-SMS-Message/1.0.0');
+    // Load the library
+    $this->load->library('nexmo');
 
 Open config/nexmo.php and put your api key and secret
 
