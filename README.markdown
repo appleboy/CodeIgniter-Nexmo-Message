@@ -10,9 +10,6 @@ How It Works?
 
 Please vist http://www.nexmo.com/how_it_works/index.html
 
-<<<<<<< HEAD
-Installation
-=======
 Requirements
 =======================
 
@@ -21,7 +18,6 @@ PHP 5.2.0+
 PHP extension: openssl, pcre, json, xml, curl
 
 Usage
->>>>>>> 147387b... Add Requirements in read me file
 =======================
 
 You can install via http://getsparks.org/packages/Nexmo-SMS-Message/versions/HEAD/show
