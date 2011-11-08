@@ -10,7 +10,18 @@ How It Works?
 
 Please vist http://www.nexmo.com/how_it_works/index.html
 
+<<<<<<< HEAD
 Installation
+=======
+Requirements
+=======================
+
+CodeIgniter 2.0.0+
+PHP 5.2.0+
+PHP extension: openssl, pcre, json, xml, curl
+
+Usage
+>>>>>>> 147387b... Add Requirements in read me file
 =======================
 
 Copy files to your applicaiotn folder
