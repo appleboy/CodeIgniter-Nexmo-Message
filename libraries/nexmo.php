@@ -10,8 +10,9 @@
 
 class Nexmo {
 
-    private $_http_xml_url = 'http://rest.nexmo.com/sms/xml';
-    private $_http_json_url = 'http://rest.nexmo.com/sms/json';
+    // using https by default
+    private $_http_xml_url = 'https://rest.nexmo.com/sms/xml';
+    private $_http_json_url = 'https://rest.nexmo.com/sms/json';
 
     // codeigniter instance
     private $_ci;
@@ -46,26 +47,26 @@ class Nexmo {
      */
     public function send_message($from, $to, $message, $type = 'text')
     {
-		mb_internal_encoding("UTF-8");
-		mb_http_output("UTF-8");
+        mb_internal_encoding("UTF-8");
+        mb_http_output("UTF-8");
         switch($type)
-		{
+        {
             case 'text':
                 $data = array(
-                	'text' => (isset($message['text'])) ? $message['text'] : '',
+                    'text' => (isset($message['text'])) ? $message['text'] : '',
                     'type' => (isset($message['type'])) ? $message['type'] : 'unicode'
                 );
             break;
             case 'binary':
                 $data = array(
-                	'body' => (isset($message['body'])) ? bin2hex($message['body']) : '',
+                    'body' => (isset($message['body'])) ? bin2hex($message['body']) : '',
                     'udh' => (isset($message['udh'])) ? bin2hex($message['udh']) : '',
                     'type' => (isset($message['type'])) ? $message['type'] : 'binary'
                 );
             break;
             case 'wappush':
                 $data = array(
-                	'title' => (isset($message['title'])) ? $message['title'] : '',
+                    'title' => (isset($message['title'])) ? $message['title'] : '',
                     'url' => (isset($message['url'])) ? $message['url'] : '',
                     'type' => (isset($message['type'])) ? $message['type'] : 'wappush',
                     'validity' => (isset($message['validity'])) ? $message['validity'] : 86400000,
@@ -74,13 +75,13 @@ class Nexmo {
         }
 
         // handle data
-		$post = array(
-			'from' => $from,
-			'to' => $to
-		);
-		$post = array_merge($post, $data);
+        $post = array(
+            'from' => $from,
+            'to' => $to
+        );
+        $post = array_merge($post, $data);
 
-		return $this->request($post);
+        return $this->request($post);
     }
 
     /**
@@ -107,6 +108,10 @@ class Nexmo {
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
+            /* WARNING: this would prevent curl from detecting a 'man in the middle' attack */
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
             $result = curl_exec($ch);
@@ -132,19 +137,19 @@ class Nexmo {
         }
         else if (ini_get('allow_url_fopen'))
         {
-			$opts = array('http' =>
-				array(
-					'method'  => 'POST',
-					'header'  => 'Content-type: application/x-www-form-urlencoded',
-					'content' => $data
-				)
-			);
-			$context = stream_context_create($opts);
-			$result = file_get_contents($url, false, $context);
+            $opts = array('http' =>
+                array(
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => $data
+                )
+            );
+            $context = stream_context_create($opts);
+            $result = file_get_contents($url, false, $context);
 
             // get http response code
             preg_match('/.*\s(\d+)\s(.*)$/', $http_response_header[0], $matches);
-			$this->_http_status = $matches[1];
+            $this->_http_status = $matches[1];
 
             $this->_http_response = $result;
         }
