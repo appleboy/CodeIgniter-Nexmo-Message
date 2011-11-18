@@ -38,9 +38,10 @@ class Nexmo {
     private $_http_status;
     private $_http_response;
     
+    // curl init session
     protected $session;
     protected $options = array();
-    protected $url;           
+    protected $url;
 
     function __construct()
     {
@@ -123,16 +124,17 @@ class Nexmo {
     }
 
     /**
-     * get_balance
+     * Account - Get Balance
      * Retrieve your current account balance.
      *
-     * return string
+     * return json or xml
      */
-    function get_balance()
+    public function get_balance()
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
+
         return $this->request('get', self::$balance_url, NULL, $options);
     }
     
@@ -140,9 +142,10 @@ class Nexmo {
      * Account - Get Pricing
      * Retrieve our outbound pricing for a given country.
      *
-     * return string
+     * @param string
+     * return json or xml
      */
-    function get_pricing($country_code = 'TW')
+    public function get_pricing($country_code = 'TW')
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
@@ -156,9 +159,12 @@ class Nexmo {
      * Account - Settings
      * Update your account settings.
      *
-     * return string
+     * @param string
+     * @param string
+     * @param string
+     * return json or xml
      */
-    function get_account_settings($newSecret = NULL, $moCallBackUrl = NULL, $drCallBackUrl = NULL)
+    public function get_account_settings($newSecret = NULL, $moCallBackUrl = NULL, $drCallBackUrl = NULL)
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
@@ -173,16 +179,18 @@ class Nexmo {
         if(isset($drCallBackUrl))
             $params['drCallBackUrl'] = urlencode($drCallBackUrl);
 
+        //self::$account_url = self::$account_url . (($params) ? '?' . http_build_query($params) : '');
         return $this->request('post', self::$account_url, $params, $options);
+        //return $this->request('post', self::$account_url, NULL, $options);
     }
     
     /**
      * Account - Numbers
      * Get all inbound numbers associated with your Nexmo account.
      *
-     * return string
+     * return json or xml
      */
-    function get_numbers()
+    public function get_numbers()
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
@@ -195,9 +203,11 @@ class Nexmo {
      * Number - Search
      * Get available inbound numbers for a given country.
      *
-     * return string
+     * @param string
+     * @param string
+     * return json or xml
      */
-    function get_number_search($country_code = 'TW', $pattern = NULL)
+    public function get_number_search($country_code = 'TW', $pattern = NULL)
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
@@ -208,7 +218,7 @@ class Nexmo {
         if(isset($pattern))
         {
             $params = array(
-                "pattern" => $params 
+                "pattern" => $params
             );
             self::$search_url = self::$search_url . '?' . http_build_query($params);
         }
@@ -220,11 +230,13 @@ class Nexmo {
      * Number - Buy
      * Purchase a given inbound number.
      *
-     * return string
+     * @param string
+     * @param string
+     * return json or xml
      */
-    function get_number_buy($country_code = 'TW', $msisdn = NULL)
+    public function get_number_buy($country_code = 'TW', $msisdn = NULL)
     {
-        if (!isset($msisdn)) 
+        if (!isset($msisdn))
         {
             echo('msisdn must be required');
             exit();
@@ -245,11 +257,13 @@ class Nexmo {
      * Number - Cancel
      * Cancel a given inbound number subscription.
      *
-     * return string
+     * @param string
+     * @param string
+     * return json or xml
      */
-    function get_number_cancel($country_code = 'TW', $msisdn = NULL)
+    public function get_number_cancel($country_code = 'TW', $msisdn = NULL)
     {
-        if (!isset($msisdn)) 
+        if (!isset($msisdn))
         {
             echo('msisdn must be required');
             exit();
@@ -272,7 +286,7 @@ class Nexmo {
      * @param array
      * return string
      */
-    function request($method, $url, $params = array(), $options = array())
+    protected function request($method, $url, $params = array(), $options = array())
     {
         if ($method === 'get')
         {
@@ -292,7 +306,7 @@ class Nexmo {
         return $this->execute();
     }
 
-    public function options($options = array())
+    protected function options($options = array())
     {
         // Set all options provided
         curl_setopt_array($this->session, $options);
@@ -300,21 +314,21 @@ class Nexmo {
         return $this;
     }
 
-    public function create($url)
+    protected function create($url)
     {
         $this->url = $url;
         $this->session = curl_init($this->url);
         return $this;
     }
 
-    public function execute()
+    protected function execute()
     {
         // Execute the request & and hide all output
         $this->_http_response = curl_exec($this->session);
-
         $this->_http_status = curl_getinfo($this->session, CURLINFO_HTTP_CODE);
 
         curl_close($this->session);
+
         return $this->response();
     }
 
@@ -340,7 +354,7 @@ class Nexmo {
      *
      * @return json or xml
      */
-    public function response()
+    protected function response()
     {
         switch($this->_format)
         {
@@ -351,7 +365,7 @@ class Nexmo {
             default:
                 $response_obj = json_decode($this->_http_response);
         }
-
+        
         return $response_obj;
     }
 
