@@ -20,10 +20,10 @@ class Nexmo {
     public static $search_url = 'http://rest.nexmo.com/number/search';
     public static $buy_url = 'http://rest.nexmo.com/number/buy';
     public static $cancel_url = 'http://rest.nexmo.com/number/cancel';
-    
+
     private $_url_array = array('balance_url', 'pricing_url', 'account_url',
                            'number_url', 'search_url', 'buy_url', 'cancel_url');
-    
+
     // codeigniter instance
     private $_ci;
 
@@ -37,7 +37,7 @@ class Nexmo {
     // http reponse
     private $_http_status;
     private $_http_response;
-    
+
     // curl init session
     protected $session;
     protected $options = array();
@@ -49,7 +49,7 @@ class Nexmo {
         $this->_ci->load->config('nexmo');
         $this->_api_key = $this->_ci->config->item("api_key");
         $this->_api_secret = $this->_ci->config->item("api_secret");
-        
+
         $this->_initial();
     }
 
@@ -112,7 +112,7 @@ class Nexmo {
 
         $params = array_merge(array('username' => $this->_api_key, 'password' => $this->_api_secret), $post);
         $url = ($this->_format == 'json') ? self::http_json_url : self::http_xml_url;
-        
+
         $options = array(
             CURLOPT_POST => TRUE,
             CURLOPT_SSL_VERIFYHOST => 1,
@@ -137,7 +137,7 @@ class Nexmo {
 
         return $this->request('get', self::$balance_url, NULL, $options);
     }
-    
+
     /**
      * Account - Get Pricing
      * Retrieve our outbound pricing for a given country.
@@ -150,7 +150,7 @@ class Nexmo {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
-        
+
         self::$pricing_url = self::$pricing_url . '/' . $country_code;
         return $this->request('get', self::$pricing_url, NULL, $options);
     }
@@ -171,7 +171,7 @@ class Nexmo {
             CURLOPT_POST => TRUE,
             CURLOPT_RETURNTRANSFER => TRUE
         );
- 
+
         if(isset($newSecret))
             $params['newSecret'] = $newSecret;
         if(isset($moCallBackUrl))
@@ -183,7 +183,7 @@ class Nexmo {
         return $this->request('post', self::$account_url, $params, $options);
         //return $this->request('post', self::$account_url, NULL, $options);
     }
-    
+
     /**
      * Account - Numbers
      * Get all inbound numbers associated with your Nexmo account.
@@ -195,10 +195,10 @@ class Nexmo {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
-        
+
         return $this->request('get', self::$number_url, NULL, $options);
     }
-    
+
     /**
      * Number - Search
      * Get available inbound numbers for a given country.
@@ -212,7 +212,7 @@ class Nexmo {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
-        
+
         self::$search_url = self::$search_url . '/' . $country_code;
 
         if(isset($pattern))
@@ -225,7 +225,7 @@ class Nexmo {
 
         return $this->request('get', self::$search_url, NULL, $options);
     }
-    
+
     /**
      * Number - Buy
      * Purchase a given inbound number.
@@ -247,12 +247,12 @@ class Nexmo {
             CURLOPT_POST => TRUE,
             CURLOPT_RETURNTRANSFER => TRUE
         );
-        
+
         self::$buy_url = self::$buy_url . '/' . $country_code . '/' . $msisdn;
 
         return $this->request('post', self::$buy_url, NULL, $options);
     }
-    
+
     /**
      * Number - Cancel
      * Cancel a given inbound number subscription.
@@ -273,7 +273,7 @@ class Nexmo {
             CURLOPT_POST => TRUE,
             CURLOPT_RETURNTRANSFER => TRUE
         );
-        
+
         self::$cancel_url = self::$cancel_url . '/' . $country_code . '/' . $msisdn;
 
         return $this->request('post', self::$cancel_url, NULL, $options);
@@ -297,12 +297,12 @@ class Nexmo {
         {
             $data = $params ? http_build_query($params) : '';
             $this->create($url);
-            
+
             $options[CURLOPT_POSTFIELDS] = $data;
 
         }
         $this->options($options);
-    
+
         return $this->execute();
     }
 
@@ -365,7 +365,7 @@ class Nexmo {
             default:
                 $response_obj = json_decode($this->_http_response);
         }
-        
+
         return $response_obj;
     }
 
@@ -405,7 +405,7 @@ class Nexmo {
         var_dump($msg);
         echo '</pre>';
     }
-    
+
     public function debug()
     {
         echo '<br />';
