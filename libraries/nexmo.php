@@ -116,8 +116,7 @@ class Nexmo {
         $options = array(
             CURLOPT_POST => TRUE,
             CURLOPT_SSL_VERIFYHOST => 1,
-            CURLOPT_SSL_VERIFYPEER => 0,
-            CURLOPT_RETURNTRANSFER => TRUE
+            CURLOPT_SSL_VERIFYPEER => 0
         );
 
         return $this->request('post', $url, $params, $options);
@@ -168,8 +167,7 @@ class Nexmo {
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-            CURLOPT_POST => TRUE,
-            CURLOPT_RETURNTRANSFER => TRUE
+            CURLOPT_POST => TRUE
         );
 
         if(isset($newSecret))
@@ -244,8 +242,7 @@ class Nexmo {
 
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-            CURLOPT_POST => TRUE,
-            CURLOPT_RETURNTRANSFER => TRUE
+            CURLOPT_POST => TRUE
         );
 
         self::$buy_url = self::$buy_url . '/' . $country_code . '/' . $msisdn;
@@ -270,8 +267,7 @@ class Nexmo {
         }
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-            CURLOPT_POST => TRUE,
-            CURLOPT_RETURNTRANSFER => TRUE
+            CURLOPT_POST => TRUE
         );
 
         self::$cancel_url = self::$cancel_url . '/' . $country_code . '/' . $msisdn;
@@ -301,6 +297,8 @@ class Nexmo {
             $options[CURLOPT_POSTFIELDS] = $data;
 
         }
+
+        $options[CURLOPT_RETURNTRANSFER] = TRUE;
         $this->options($options);
 
         return $this->execute();
