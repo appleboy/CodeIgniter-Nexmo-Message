@@ -173,13 +173,11 @@ class Nexmo {
         if(isset($newSecret))
             $params['newSecret'] = $newSecret;
         if(isset($moCallBackUrl))
-            $params['moCallBackUrl'] = urlencode($moCallBackUrl);
+            $params['moCallBackUrl'] = $moCallBackUrl;
         if(isset($drCallBackUrl))
-            $params['drCallBackUrl'] = urlencode($drCallBackUrl);
+            $params['drCallBackUrl'] = $drCallBackUrl;
 
-        //self::$account_url = self::$account_url . (($params) ? '?' . http_build_query($params) : '');
         return $this->request('post', self::$account_url, $params, $options);
-        //return $this->request('post', self::$account_url, NULL, $options);
     }
 
     /**
@@ -207,21 +205,21 @@ class Nexmo {
      */
     public function get_number_search($country_code = 'TW', $pattern = NULL)
     {
+        $params = NULL;
+
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
 
         self::$search_url = self::$search_url . '/' . $country_code;
 
+
         if(isset($pattern))
         {
-            $params = array(
-                "pattern" => $params
-            );
-            self::$search_url = self::$search_url . '?' . http_build_query($params);
+            $params = array("pattern" => $params);
         }
 
-        return $this->request('get', self::$search_url, NULL, $options);
+        return $this->request('get', self::$search_url, $params, $options);
     }
 
     /**
@@ -297,7 +295,8 @@ class Nexmo {
             $options[CURLOPT_POSTFIELDS] = $data;
 
         }
-
+        // TRUE to return the transfer as a string of the return value of curl_exec()
+        // instead of outputting it out directly.
         $options[CURLOPT_RETURNTRANSFER] = TRUE;
         $this->options($options);
 
@@ -402,12 +401,6 @@ class Nexmo {
         echo '<pre>';
         var_dump($msg);
         echo '</pre>';
-    }
-
-    public function debug()
-    {
-        echo '<br />';
-        echo '<p>url: ' . $this->url . '</p>';
     }
 }
 
