@@ -49,6 +49,26 @@ Open browser and load the following URL
 
     http://your_host/example
 
+Change Log
+=======================
+Please vist [API documentation](http://nexmo.com/documentation/index.html) first
+
+Date: 2011-11-19 (Developer API)
+
+* Account: Get Balance
+* Account: Get Pricing
+* Account: Settings
+* Account: Numbers
+* Number: Search
+* Number: Buy
+* Number: Cancel
+
+Date: 2011-10-07 (Messaging References)
+
+* Send a Message
+* Send Binary Message
+* Send WAP Push Message
+
 Copyright
 =======================
 
