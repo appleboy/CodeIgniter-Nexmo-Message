@@ -11,8 +11,18 @@
 class Nexmo {
 
     // using https by default
-    private $_http_xml_url = 'https://rest.nexmo.com/sms/xml';
-    private $_http_json_url = 'https://rest.nexmo.com/sms/json';
+    const http_xml_url = 'https://rest.nexmo.com/sms/xml';
+    const http_json_url = 'https://rest.nexmo.com/sms/json';
+    public static $balance_url = 'http://rest.nexmo.com/account/get-balance';
+    public static $pricing_url = 'http://rest.nexmo.com/account/get-pricing/outbound';
+    public static $account_url = 'http://rest.nexmo.com/account/settings';
+    public static $number_url = 'http://rest.nexmo.com/account/numbers';
+    public static $search_url = 'http://rest.nexmo.com/number/search';
+    public static $buy_url = 'http://rest.nexmo.com/number/buy';
+    public static $cancel_url = 'http://rest.nexmo.com/number/cancel';
+
+    private $_url_array = array('balance_url', 'pricing_url', 'account_url',
+                           'number_url', 'search_url', 'buy_url', 'cancel_url');
 
     // codeigniter instance
     private $_ci;
@@ -28,12 +38,31 @@ class Nexmo {
     private $_http_status;
     private $_http_response;
 
+    // curl init session
+    protected $session;
+    protected $options = array();
+    protected $url;
+
     function __construct()
     {
         $this->_ci =& get_instance();
         $this->_ci->load->config('nexmo');
         $this->_api_key = $this->_ci->config->item("api_key");
         $this->_api_secret = $this->_ci->config->item("api_secret");
+
+        $this->_initial();
+    }
+
+    /**
+     * initial api url
+     * return null
+     */
+    private function _initial()
+    {
+        foreach($this->_url_array as $key)
+        {
+            self::$$key = self::$$key . '/' . $this->_api_key . '/' . $this->_api_secret;
+        }
     }
 
     /**
@@ -81,7 +110,167 @@ class Nexmo {
         );
         $post = array_merge($post, $data);
 
-        return $this->request($post);
+        $params = array_merge(array('username' => $this->_api_key, 'password' => $this->_api_secret), $post);
+        $url = ($this->_format == 'json') ? self::http_json_url : self::http_xml_url;
+
+        $options = array(
+            CURLOPT_POST => TRUE,
+            CURLOPT_SSL_VERIFYHOST => 1,
+            CURLOPT_SSL_VERIFYPEER => 0
+        );
+
+        return $this->request('post', $url, $params, $options);
+    }
+
+    /**
+     * Account - Get Balance
+     * Retrieve your current account balance.
+     *
+     * return json or xml
+     */
+    public function get_balance()
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
+        );
+
+        return $this->request('get', self::$balance_url, NULL, $options);
+    }
+
+    /**
+     * Account - Get Pricing
+     * Retrieve our outbound pricing for a given country.
+     *
+     * @param string
+     * return json or xml
+     */
+    public function get_pricing($country_code = 'TW')
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
+        );
+
+        self::$pricing_url = self::$pricing_url . '/' . $country_code;
+        return $this->request('get', self::$pricing_url, NULL, $options);
+    }
+
+    /**
+     * Account - Settings
+     * Update your account settings.
+     *
+     * @param string
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function get_account_settings($newSecret = NULL, $moCallBackUrl = NULL, $drCallBackUrl = NULL)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+            CURLOPT_POST => TRUE
+        );
+
+        if(isset($newSecret))
+            $params['newSecret'] = $newSecret;
+        if(isset($moCallBackUrl))
+            $params['moCallBackUrl'] = $moCallBackUrl;
+        if(isset($drCallBackUrl))
+            $params['drCallBackUrl'] = $drCallBackUrl;
+
+        return $this->request('post', self::$account_url, $params, $options);
+    }
+
+    /**
+     * Account - Numbers
+     * Get all inbound numbers associated with your Nexmo account.
+     *
+     * return json or xml
+     */
+    public function get_numbers()
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
+        );
+
+        return $this->request('get', self::$number_url, NULL, $options);
+    }
+
+    /**
+     * Number - Search
+     * Get available inbound numbers for a given country.
+     *
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function get_number_search($country_code = 'TW', $pattern = NULL)
+    {
+        $params = NULL;
+
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
+        );
+
+        self::$search_url = self::$search_url . '/' . $country_code;
+
+
+        if(isset($pattern))
+        {
+            $params = array("pattern" => $params);
+        }
+
+        return $this->request('get', self::$search_url, $params, $options);
+    }
+
+    /**
+     * Number - Buy
+     * Purchase a given inbound number.
+     *
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function get_number_buy($country_code = 'TW', $msisdn = NULL)
+    {
+        if (!isset($msisdn))
+        {
+            echo('msisdn must be required');
+            exit();
+        }
+
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+            CURLOPT_POST => TRUE
+        );
+
+        self::$buy_url = self::$buy_url . '/' . $country_code . '/' . $msisdn;
+
+        return $this->request('post', self::$buy_url, NULL, $options);
+    }
+
+    /**
+     * Number - Cancel
+     * Cancel a given inbound number subscription.
+     *
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function get_number_cancel($country_code = 'TW', $msisdn = NULL)
+    {
+        if (!isset($msisdn))
+        {
+            echo('msisdn must be required');
+            exit();
+        }
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+            CURLOPT_POST => TRUE
+        );
+
+        self::$cancel_url = self::$cancel_url . '/' . $country_code . '/' . $msisdn;
+
+        return $this->request('post', self::$cancel_url, NULL, $options);
     }
 
     /**
@@ -91,68 +280,51 @@ class Nexmo {
      * @param array
      * return string
      */
-    function request($data = array())
+    protected function request($method, $url, $params = array(), $options = array())
     {
-        $data = array_merge(array('username' => $this->_api_key, 'password' => $this->_api_secret), $data);
-
-        $data = http_build_query($data);
-
-        $url = ($this->_format == 'json') ? $this->_http_json_url : $this->_http_xml_url;
-
-        if (function_exists('curl_version'))
+        if ($method === 'get')
         {
-            $ch = curl_init();
-
-            /* POST Url */
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-
-            /* WARNING: this would prevent curl from detecting a 'man in the middle' attack */
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
-            $result = curl_exec($ch);
-
-            // show error message
-            if($this->_enable_debug)
-            {
-                if(!curl_errno($ch))
-                {
-                    $info = curl_getinfo($ch);
-                    echo 'Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'] . "<br />";
-                }
-                else
-                {
-                    echo 'Curl error: ' . curl_error($ch) . "<br />";
-                }
-            }
-
-            $this->_http_response = $result;
-            $this->_http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-            curl_close($ch);
+            // If a URL is provided, create new session
+            $this->create($url . ($params ? '?' . http_build_query($params) : ''));
         }
-        else if (ini_get('allow_url_fopen'))
+        else
         {
-            $opts = array('http' =>
-                array(
-                    'method'  => 'POST',
-                    'header'  => 'Content-type: application/x-www-form-urlencoded',
-                    'content' => $data
-                )
-            );
-            $context = stream_context_create($opts);
-            $result = file_get_contents($url, false, $context);
+            $data = $params ? http_build_query($params) : '';
+            $this->create($url);
 
-            // get http response code
-            preg_match('/.*\s(\d+)\s(.*)$/', $http_response_header[0], $matches);
-            $this->_http_status = $matches[1];
+            $options[CURLOPT_POSTFIELDS] = $data;
 
-            $this->_http_response = $result;
         }
+        // TRUE to return the transfer as a string of the return value of curl_exec()
+        // instead of outputting it out directly.
+        $options[CURLOPT_RETURNTRANSFER] = TRUE;
+        $this->options($options);
+
+        return $this->execute();
+    }
+
+    protected function options($options = array())
+    {
+        // Set all options provided
+        curl_setopt_array($this->session, $options);
+
+        return $this;
+    }
+
+    protected function create($url)
+    {
+        $this->url = $url;
+        $this->session = curl_init($this->url);
+        return $this;
+    }
+
+    protected function execute()
+    {
+        // Execute the request & and hide all output
+        $this->_http_response = curl_exec($this->session);
+        $this->_http_status = curl_getinfo($this->session, CURLINFO_HTTP_CODE);
+
+        curl_close($this->session);
 
         return $this->response();
     }
@@ -179,7 +351,7 @@ class Nexmo {
      *
      * @return json or xml
      */
-    public function response()
+    protected function response()
     {
         switch($this->_format)
         {
