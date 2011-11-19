@@ -15,7 +15,7 @@ class Example extends CI_Controller {
         $this->nexmo->set_format('json');
 
         // **********************************Text Message*************************************
-        /*
+
         $from = 'xxxxxxxxxx';
         $to = 'xxxxxxxxxxxx';
         $message = array(
@@ -25,8 +25,9 @@ class Example extends CI_Controller {
         echo "<h1>Text Message</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
-        */
+
         // *********************************Binary Message**************************************
+        /*
         $from = 'xxxxxxxx';
         $to = 'xxxxxxxxxx';
         $message = array(
@@ -37,7 +38,7 @@ class Example extends CI_Controller {
         echo "<h1>Binary Message</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
-
+        */
         // *********************************Wappush Message**************************************
         /*
         $from = 'xxxxxxxx';
