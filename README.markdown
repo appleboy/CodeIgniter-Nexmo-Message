@@ -35,6 +35,7 @@ Send Text Message
     $message = array(
         'text' => 'test message'
     );
+
     $response = $this->nexmo->send_message($from, $to, $message);
     echo "<h1>Text Message</h1>";
     $this->nexmo->d_print($response);
@@ -127,6 +128,14 @@ Get http reponse code:
 Change Log
 =======================
 Please vist [API documentation](http://nexmo.com/documentation/index.html) first
+
+Date: 2013-01-23 (Developer API)
+
+* Account: Top-up
+* Number: Update
+* Search: Message
+* Search: Messages
+* Search: Rejections
 
 Date: 2011-11-19 (Developer API)
 

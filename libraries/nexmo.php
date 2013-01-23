@@ -17,12 +17,19 @@ class Nexmo {
     public static $pricing_url = 'http://rest.nexmo.com/account/get-pricing/outbound';
     public static $account_url = 'http://rest.nexmo.com/account/settings';
     public static $number_url = 'http://rest.nexmo.com/account/numbers';
+    public static $top_up_url = 'http://rest.nexmo.com/account/top-up';
     public static $search_url = 'http://rest.nexmo.com/number/search';
     public static $buy_url = 'http://rest.nexmo.com/number/buy';
     public static $cancel_url = 'http://rest.nexmo.com/number/cancel';
+    public static $update_url = 'http://rest.nexmo.com/number/update';
+    public static $message_url = 'http://rest.nexmo.com/search/message';
+    public static $messages_url = 'http://rest.nexmo.com/search/messages';
+    public static $rejections_url = 'http://rest.nexmo.com/search/rejections';
 
     private $_url_array = array('balance_url', 'pricing_url', 'account_url',
-                           'number_url', 'search_url', 'buy_url', 'cancel_url');
+                           'number_url', 'top_up_url', 'search_url', 'buy_url',
+                           'update_url', 'cancel_url', 'message_url', 'messages_url',
+                           'rejections_url');
 
     // codeigniter instance
     private $_ci;
@@ -43,7 +50,7 @@ class Nexmo {
     protected $options = array();
     protected $url;
 
-    function __construct()
+    public function __construct()
     {
         $this->_ci =& get_instance();
         $this->_ci->load->config('nexmo');
@@ -134,7 +141,7 @@ class Nexmo {
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
 
-        return $this->request('get', self::$balance_url, NULL, $options);
+        return $this->request('get', self::$balance_url, null, $options);
     }
 
     /**
@@ -151,7 +158,7 @@ class Nexmo {
         );
 
         self::$pricing_url = self::$pricing_url . '/' . $country_code;
-        return $this->request('get', self::$pricing_url, NULL, $options);
+        return $this->request('get', self::$pricing_url, null, $options);
     }
 
     /**
@@ -163,7 +170,7 @@ class Nexmo {
      * @param string
      * return json or xml
      */
-    public function get_account_settings($newSecret = NULL, $moCallBackUrl = NULL, $drCallBackUrl = NULL)
+    public function get_account_settings($newSecret = null, $moCallBackUrl = null, $drCallBackUrl = null)
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
@@ -192,7 +199,27 @@ class Nexmo {
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
         );
 
-        return $this->request('get', self::$number_url, NULL, $options);
+        return $this->request('get', self::$number_url, null, $options);
+    }
+
+    /**
+     * Account - Top-up
+     * Top-up your account, only if you have turn-on the 'auto-reload' feature.
+     * The top-up amount is the one associated with your 'auto-reload' transaction.
+     *
+     * return json or xml
+     */
+    public function get_top_up($trx = null)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
+        );
+
+        if (isset($trx)) {
+            $params['trx'] = $trx;
+        }
+
+        return $this->request('get', self::$top_up_url, $params, $options);
     }
 
     /**
@@ -203,9 +230,9 @@ class Nexmo {
      * @param string
      * return json or xml
      */
-    public function get_number_search($country_code = 'TW', $pattern = NULL)
+    public function get_number_search($country_code = 'TW', $pattern = null)
     {
-        $params = NULL;
+        $params = null;
 
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format)
@@ -230,7 +257,7 @@ class Nexmo {
      * @param string
      * return json or xml
      */
-    public function get_number_buy($country_code = 'TW', $msisdn = NULL)
+    public function get_number_buy($country_code = 'TW', $msisdn = null)
     {
         if (!isset($msisdn))
         {
@@ -245,7 +272,7 @@ class Nexmo {
 
         self::$buy_url = self::$buy_url . '/' . $country_code . '/' . $msisdn;
 
-        return $this->request('post', self::$buy_url, NULL, $options);
+        return $this->request('post', self::$buy_url, null, $options);
     }
 
     /**
@@ -256,7 +283,7 @@ class Nexmo {
      * @param string
      * return json or xml
      */
-    public function get_number_cancel($country_code = 'TW', $msisdn = NULL)
+    public function get_number_cancel($country_code = 'TW', $msisdn = null)
     {
         if (!isset($msisdn))
         {
@@ -268,9 +295,120 @@ class Nexmo {
             CURLOPT_POST => TRUE
         );
 
-        self::$cancel_url = self::$cancel_url . '/' . $country_code . '/' . $msisdn;
+        $_url = self::$cancel_url . '/' . $country_code . '/' . $msisdn;
 
-        return $this->request('post', self::$cancel_url, NULL, $options);
+        return $this->request('post', $_url, null, $options);
+    }
+
+    /**
+     * Number - Update
+     * Update your number callback.
+     *
+     * @param string
+     * @param string
+     * @param array
+     * return json or xml
+     */
+    public function get_number_update($country_code = 'TW', $msisdn = null, $params = array())
+    {
+        if (!isset($msisdn))
+        {
+            echo('msisdn must be required');
+            exit();
+        }
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+            CURLOPT_POST => TRUE
+        );
+
+        if (!is_array($params) or empty($params)) {
+            $params = array();
+        }
+
+        $_url = self::$update_url . '/' . $country_code . '/' . $msisdn . '?' . http_build_query($params);
+        return $this->request('post', $_url, null, $options);
+    }
+
+    /**
+     * Search - Message
+     * Search a previously sent message for a given message id.
+     * Please note a message become searchable a few minutes
+     * after submission for real-time delivery notification implement our DLR call back.
+     *
+     * @param string
+     * return json or xml
+     */
+    public function search_message($id = null)
+    {
+        if (!isset($id) or empty($id))
+        {
+            echo('Your message id must be required');
+            exit();
+        }
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        );
+
+        $_url = self::$message_url . '/' . $id;
+        return $this->request('get', $_url , null, $options);
+    }
+
+    /**
+     * Search - Messages
+     * Search sent messages.
+     * Please note a message become searchable a few minutes
+     * after submission for real-time delivery notification implement our DLR call back.
+     *
+     * @param string
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function search_messages($ids = array(), $date = null, $to = null)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        );
+
+        if (isset($ids) and !empty($ids) and is_array($ids)) {
+            $url_string = '';
+            foreach ($ids as $row) {
+                $url_string .= ((!empty($url_string)) ? '&' : '?') . 'ids=' . $row;
+            }
+            $_url = self::$messages_url . $url_string;
+        }
+
+        if (isset($date) and isset($to)) {
+            $params = array(
+                'date' => $date,
+                'to' => $to
+            );
+            $_url = self::$messages_url;
+        }
+
+        return $this->request('get', $_url, $params, $options);
+    }
+
+    /**
+     * Search - Rejections
+     * Search rejected messages. Please note a message become searchable a few minutes after submission.
+     *
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function search_rejections($date = null, $to = null)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        );
+
+        $params = array(
+            'date' => $date,
+            'to' => $to
+        );
+
+        return $this->request('get', self::$rejections_url, $params, $options);
     }
 
     /**
