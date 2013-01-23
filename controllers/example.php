@@ -77,7 +77,7 @@ class Example extends CI_Controller {
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Account - Top-up*********************************
-        $trx = '00X123456Y7890123Z';
+        $trx = 'xxxxxxxxxxxxx';
         $response = $this->nexmo->get_top_up($trx);
         echo "<h1>Account - Top-up</h1>";
         $this->nexmo->d_print($response);
@@ -90,13 +90,13 @@ class Example extends CI_Controller {
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Number - Buy*********************************
-        $response = $this->nexmo->get_number_buy('US', '34911067000');
+        $response = $this->nexmo->get_number_buy('US', 'xxxxxxxxxxxxx');
         echo "<h1>Number - Buy</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Number - Cancel*********************************
-        $response = $this->nexmo->get_number_cancel('US', '34911067000');
+        $response = $this->nexmo->get_number_cancel('US', 'xxxxxxxxxxxxx');
         echo "<h1>Number - Cancel</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
@@ -106,31 +106,31 @@ class Example extends CI_Controller {
             'moHttpUrl' => 'http://xxxxxx'
             'moSmppSysType' => 'inbound'
         );
-        $response = $this->nexmo->get_number_update('TW', '886934353293', null);
+        $response = $this->nexmo->get_number_update('TW', 'xxxxxxxxxxxxx', null);
         echo "<h1>Number - Update</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Search - Message*********************************
-        $response = $this->nexmo->search_message('0200000002A26B28');
+        $response = $this->nexmo->search_message('xxxxxxxxxxxxx');
         echo "<h1>Search - Message</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Search - Messages*********************************
-        $ids = array('0200000002A26B28', '0200000002A26B28');
+        $ids = array('xxxxxxxxxxxxx', 'xxxxxxxxxxxxx');
         $response = $this->nexmo->search_messages($ids);
         echo "<h1>Search - Messages</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
-        $response = $this->nexmo->search_messages(null, '2013-01-23', '886935082580');
+        $response = $this->nexmo->search_messages(null, '2013-01-23', 'xxxxxxxxxxxxx');
         echo "<h1>Search - Messages</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Search - Rejections*********************************
-        $response = $this->nexmo->search_rejections('2013-01-23', '886935082580');
+        $response = $this->nexmo->search_rejections('2013-01-23', 'xxxxxxxxxxxxx');
         echo "<h1>Search - Message</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
