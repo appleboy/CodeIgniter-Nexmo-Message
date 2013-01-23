@@ -53,6 +53,14 @@ Change Log
 =======================
 Please vist [API documentation](http://nexmo.com/documentation/index.html) first
 
+Date: 2013-01-23 (Developer API)
+
+* Account: Top-up
+* Number: Update
+* Search: Message
+* Search: Messages
+* Search: Rejections
+
 Date: 2011-11-19 (Developer API)
 
 * Account: Get Balance
