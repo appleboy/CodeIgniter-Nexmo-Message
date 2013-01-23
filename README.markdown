@@ -96,6 +96,14 @@ Account - Numbers
     $this->nexmo->d_print($response);
     echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
+Account - Top-up
+
+    $trx = '00X123456Y7890123Z';
+    $response = $this->nexmo->get_top_up($trx);
+    echo "<h1>Account - Top-up</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
 Number - Search
 
     $response = $this->nexmo->get_number_search('US', NULL);
@@ -114,6 +122,44 @@ Number - Cancel
 
     $response = $this->nexmo->get_number_cancel('US', '34911067000');
     echo "<h1>Number - Cancel</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+Number - Update
+
+    $params = array(
+        'moHttpUrl' => 'http://xxxxxx'
+        'moSmppSysType' => 'inbound'
+    );
+    $response = $this->nexmo->get_number_update('TW', 'xxxxxxx', $params);
+    echo "<h1>Number - Update</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+Search - Message
+
+    $response = $this->nexmo->search_message('xxxxxxxxxxxxx');
+    echo "<h1>Search - Message</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+Search - Messages
+
+    $ids = array('xxxxxxxxxxxxx', 'xxxxxxxxxxxxx');
+    $response = $this->nexmo->search_messages($ids);
+    echo "<h1>Search - Messages</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+    $response = $this->nexmo->search_messages(null, '2013-01-23', 'xxxxxxxxxxxxx');
+    echo "<h1>Search - Messages</h1>";
+    $this->nexmo->d_print($response);
+    echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+Search - Rejections
+
+    $response = $this->nexmo->search_rejections('2013-01-23', 'xxxxxxxxxxxxx');
+    echo "<h1>Search - Message</h1>";
     $this->nexmo->d_print($response);
     echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
