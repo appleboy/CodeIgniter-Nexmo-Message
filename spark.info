@@ -4,10 +4,10 @@ name: Nexmo-SMS-Message
 
 # This is the current version of this spark. All sparks should be in
 #  x.x.x format. Validation will fail otherwise.
-version: 1.0.2
+version: 1.0.3
 
 # This is the version of CodeIgniter this spark is compatible up to. It should
 #  be in x.x.x format
-compatibility: 2.1.0
+compatibility: 2.1.3
 
 tags: ["nexmo-sms-message", "nexmo", "sms"]

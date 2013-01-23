@@ -21,7 +21,7 @@ Usage
 =======================
 
     // Load the spark
-    $this->load->spark('Nexmo-SMS-Message/1.0.2');
+    $this->load->spark('Nexmo-SMS-Message/1.0.3');
 
 Open config/nexmo.php and put your api key and secret
 
