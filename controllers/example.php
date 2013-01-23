@@ -113,8 +113,24 @@ class Example extends CI_Controller {
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Search - Message*********************************
-        $response = $this->nexmo->search_message('xxxxxx');
+        $response = $this->nexmo->search_message('0200000002A26B28');
         echo "<h1>Search - Message</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+        // ********************************Search - Messages*********************************
+        $ids = array('0200000002A26B28', '0200000002A26B28');
+        $response = $this->nexmo->search_messages($ids);
+        echo "<h1>Search - Messages</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+        $params = array(
+            'date' => '2013-01-23',
+            'to' => '886935082580'
+        );
+        $response = $this->nexmo->search_messages(null, $params);
+        echo "<h1>Search - Messages</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
         */
