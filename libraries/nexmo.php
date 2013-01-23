@@ -22,10 +22,11 @@ class Nexmo {
     public static $buy_url = 'http://rest.nexmo.com/number/buy';
     public static $cancel_url = 'http://rest.nexmo.com/number/cancel';
     public static $update_url = 'http://rest.nexmo.com/number/update';
+    public static $message_url = 'http://rest.nexmo.com/search/message';
 
     private $_url_array = array('balance_url', 'pricing_url', 'account_url',
                            'number_url', 'top_up_url', 'search_url', 'buy_url',
-                           'update_url', 'cancel_url');
+                           'update_url', 'cancel_url', 'message_url');
 
     // codeigniter instance
     private $_ci;
@@ -323,6 +324,30 @@ class Nexmo {
 
         $_url = self::$update_url . '/' . $country_code . '/' . $msisdn . '?' . http_build_query($params);
         return $this->request('post', $_url, null, $options);
+    }
+
+    /**
+     * Search - Message
+     * Search a previously sent message for a given message id.
+     * Please note a message become searchable a few minutes
+     * after submission for real-time delivery notification implement our DLR call back.
+     *
+     * @param string
+     * return json or xml
+     */
+    public function search_message($id = null)
+    {
+        if (!isset($id) or empty($id))
+        {
+            echo('Your message id must be required');
+            exit();
+        }
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        );
+
+        $_url = self::$message_url . '/' . $id;
+        return $this->request('get', $_url , null, $options);
     }
 
     /**
