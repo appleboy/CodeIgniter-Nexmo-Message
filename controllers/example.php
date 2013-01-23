@@ -15,7 +15,6 @@ class Example extends CI_Controller {
         $this->nexmo->set_format('json');
 
         // **********************************Text Message*************************************
-
         $from = 'xxxxxxxx';
         $to = 'xxxxxxx';
         $message = array(
@@ -125,12 +124,14 @@ class Example extends CI_Controller {
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
-        $params = array(
-            'date' => '2013-01-23',
-            'to' => '886935082580'
-        );
-        $response = $this->nexmo->search_messages(null, $params);
+        $response = $this->nexmo->search_messages(null, '2013-01-23', '886935082580');
         echo "<h1>Search - Messages</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+        // ********************************Search - Rejections*********************************
+        $response = $this->nexmo->search_rejections('2013-01-23', '886935082580');
+        echo "<h1>Search - Message</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
         */

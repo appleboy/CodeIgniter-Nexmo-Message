@@ -24,10 +24,12 @@ class Nexmo {
     public static $update_url = 'http://rest.nexmo.com/number/update';
     public static $message_url = 'http://rest.nexmo.com/search/message';
     public static $messages_url = 'http://rest.nexmo.com/search/messages';
+    public static $rejections_url = 'http://rest.nexmo.com/search/rejections';
 
     private $_url_array = array('balance_url', 'pricing_url', 'account_url',
                            'number_url', 'top_up_url', 'search_url', 'buy_url',
-                           'update_url', 'cancel_url', 'message_url', 'messages_url');
+                           'update_url', 'cancel_url', 'message_url', 'messages_url',
+                           'rejections_url');
 
     // codeigniter instance
     private $_ci;
@@ -358,9 +360,11 @@ class Nexmo {
      * after submission for real-time delivery notification implement our DLR call back.
      *
      * @param string
+     * @param string
+     * @param string
      * return json or xml
      */
-    public function search_messages($ids = array(), $params = array())
+    public function search_messages($ids = array(), $date = null, $to = null)
     {
         $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
@@ -374,11 +378,37 @@ class Nexmo {
             $_url = self::$messages_url . $url_string;
         }
 
-        if (isset($params) and is_array($params)) {
+        if (isset($date) and isset($to)) {
+            $params = array(
+                'date' => $date,
+                'to' => $to
+            );
             $_url = self::$messages_url;
         }
-        echo $_url;
+
         return $this->request('get', $_url, $params, $options);
+    }
+
+    /**
+     * Search - Rejections
+     * Search rejected messages. Please note a message become searchable a few minutes after submission.
+     *
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function search_rejections($date = null, $to = null)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        );
+
+        $params = array(
+            'date' => $date,
+            'to' => $to
+        );
+
+        return $this->request('get', self::$rejections_url, $params, $options);
     }
 
     /**
