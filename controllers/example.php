@@ -15,9 +15,8 @@ class Example extends CI_Controller {
         $this->nexmo->set_format('json');
 
         // **********************************Text Message*************************************
-
-        $from = 'xxxxxxxxxx';
-        $to = 'xxxxxxxxxxxx';
+        $from = 'xxxxxxxx';
+        $to = 'xxxxxxx';
         $message = array(
             'text' => 'test message'
         );
@@ -52,8 +51,7 @@ class Example extends CI_Controller {
         echo "<h1>Wappush Message</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
-        */
-        /*
+
         // *********************************Account - Get Balance*********************************
         $response = $this->nexmo->get_balance();
         echo "<h1>Account - Get Balance</h1>";
@@ -78,6 +76,13 @@ class Example extends CI_Controller {
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
+        // ********************************Account - Top-up*********************************
+        $trx = '00X123456Y7890123Z';
+        $response = $this->nexmo->get_top_up($trx);
+        echo "<h1>Account - Top-up</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
         // ********************************Number - Search*********************************
         $response = $this->nexmo->get_number_search('US', NULL);
         echo "<h1>Number - Search</h1>";
@@ -93,6 +98,16 @@ class Example extends CI_Controller {
         // ********************************Number - Cancel*********************************
         $response = $this->nexmo->get_number_cancel('US', '34911067000');
         echo "<h1>Number - Cancel</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+        // ********************************Number - Update*********************************
+        $params = array(
+            'moHttpUrl' => 'http://xxxxxx'
+            'moSmppSysType' => 'inbound'
+        );
+        $response = $this->nexmo->get_number_update('TW', '886934353293', null);
+        echo "<h1>Number - Update</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
         */
