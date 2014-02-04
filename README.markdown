@@ -75,5 +75,5 @@ Date: 2011-10-07 (Messaging References)
 
 # Copyright
 
-Copyright (C) 2011 Bo-Yi Wu ( appleboy AT gmail.com )
+Copyright (C) 2011-2014 Bo-Yi Wu ( appleboy AT gmail.com )
 
