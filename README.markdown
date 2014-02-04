@@ -51,7 +51,7 @@ Open browser and load the following URL
 
 Change Log
 =======================
-Please vist [API documentation](http://nexmo.com/documentation/index.html) first
+Please vist [API documentation](https://docs.nexmo.com/) first
 
 Date: 2013-01-23 (Developer API)
 
