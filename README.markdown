@@ -1,24 +1,20 @@
-What is Nexmo?
-=======================
+# What is Nexmo?
 
 Nexmo is a cloud based SMS API that lets you send
 and receive high volume of messages at wholesale rates.
 Web Site: http://www.nexmo.com/index.html
 
-How It Works?
-=======================
+# How It Works?
 
-Please vist http://www.nexmo.com/how_it_works/index.html
+Please vist https://www.nexmo.com/tour/
 
-Requirements
-=======================
+# Requirements
 
 * CodeIgniter 2.0.0+
 * PHP 5.2.0+
 * PHP extension: openssl, pcre, json, xml, curl
 
-Usage
-=======================
+# Usage
 
 You can install via http://getsparks.org/packages/Nexmo-SMS-Message/versions/HEAD/show
 
@@ -49,8 +45,8 @@ Open browser and load the following URL
 
     http://your_host/example
 
-Change Log
-=======================
+# Change Log
+
 Please vist [API documentation](https://docs.nexmo.com/) first
 
 Date: 2013-01-23 (Developer API)
@@ -77,8 +73,7 @@ Date: 2011-10-07 (Messaging References)
 * Send Binary Message
 * Send WAP Push Message
 
-Copyright
-=======================
+# Copyright
 
 Copyright (C) 2011 Bo-Yi Wu ( appleboy AT gmail.com )
 
