@@ -41,6 +41,12 @@ class Nexmo {
 
     // debug mode
     private $_enable_debug = FALSE;
+
+    // http request
+    private $_request_url;
+    private $_request_headers;
+    private $_request_body;
+
     // http reponse
     private $_http_status;
     private $_http_response;
@@ -117,12 +123,12 @@ class Nexmo {
         );
         $post = array_merge($post, $data);
 
-        $params = array_merge(array('username' => $this->_api_key, 'password' => $this->_api_secret), $post);
+        $params = array_merge(array('api_key' => $this->_api_key, 'api_secret' => $this->_api_secret), $post);
         $url = ($this->_format == 'json') ? self::http_json_url : self::http_xml_url;
 
         $options = array(
             CURLOPT_POST => TRUE,
-            CURLOPT_SSL_VERIFYHOST => 1,
+            CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_SSL_VERIFYPEER => 0
         );
 
@@ -422,20 +428,25 @@ class Nexmo {
     {
         if ($method === 'get')
         {
-            // If a URL is provided, create new session
-            $this->create($url . ($params ? '?' . http_build_query($params) : ''));
+            $uri = $url . ($params ? '?' . http_build_query($params) : '');
+            $this->create($uri);
+            $this->_request_url = $uri;
         }
         else
         {
             $data = $params ? http_build_query($params) : '';
             $this->create($url);
+            $this->_request_url = $url;
 
             $options[CURLOPT_POSTFIELDS] = $data;
+            $this->_request_body = $options[CURLOPT_POSTFIELDS];
 
         }
         // TRUE to return the transfer as a string of the return value of curl_exec()
         // instead of outputting it out directly.
         $options[CURLOPT_RETURNTRANSFER] = TRUE;
+        $options[CURLINFO_HEADER_OUT] = true;
+
         $this->options($options);
 
         return $this->execute();
@@ -452,6 +463,7 @@ class Nexmo {
     protected function create($url)
     {
         $this->url = $url;
+
         $this->session = curl_init($this->url);
         return $this;
     }
@@ -461,6 +473,7 @@ class Nexmo {
         // Execute the request & and hide all output
         $this->_http_response = curl_exec($this->session);
         $this->_http_status = curl_getinfo($this->session, CURLINFO_HTTP_CODE);
+        $this->_request_headers = curl_getinfo($this->session, CURLINFO_HEADER_OUT);
 
         curl_close($this->session);
 
@@ -513,6 +526,12 @@ class Nexmo {
     public function get_http_status()
     {
         return (int) $this->_http_status;
+    }
+
+    public function get_request()
+    {
+      //return $this->_request_url . "\n" . trim($this->_request_headers) . "\n" . trim($this->_request_body);
+      return trim($this->_request_headers) . "\n" . trim($this->_request_body);
     }
 
     /**
