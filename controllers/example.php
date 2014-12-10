@@ -1,7 +1,7 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  (! defined('BASEPATH')) and exit('No direct script access allowed');
 
-class Example extends CI_Controller {
-
+class example extends CI_Controller
+{
     public function __construct()
     {
         parent::__construct();
@@ -18,12 +18,12 @@ class Example extends CI_Controller {
         $from = 'xxxxxxxx';
         $to = 'xxxxxxx';
         $message = array(
-            'text' => 'test message'
+            'text' => 'test message',
         );
         $response = $this->nexmo->send_message($from, $to, $message);
         echo "<h1>Text Message</h1>";
         $this->nexmo->d_print($response);
-        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+        echo "<h3>Response Code: ".$this->nexmo->get_http_status()."</h3>";
 
         // *********************************Binary Message**************************************
         /*
