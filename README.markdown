@@ -18,28 +18,36 @@ Please vist https://www.nexmo.com/tour/
 
 You can install via http://getsparks.org/packages/Nexmo-SMS-Message/versions/HEAD/show
 
-    $ php tools/spark install -v1.0.3 Nexmo-SMS-Message
+```bash
+$ php tools/spark install -v1.0.4 Nexmo-SMS-Message
+```
 
 or referrer the following steps.
 
 Copy files to your applicaiotn folder
 
-    $ cp config/nexmo.php application/config/
-    $ cp libries/nexmo.php application/libries/
-    $ cp controller/nexmo.php application/controller/
+```bash
+$ cp config/nexmo.php application/config/
+$ cp libries/nexmo.php application/libries/
+$ cp controller/nexmo.php application/controller/
+```
 
 Open config/nexmo.php and put your api key and secret
 
-    $config['api_key'] = 'xxxxxx';
-    $config['api_secret'] = 'xxxxxx';
+```php
+$config['api_key'] = 'xxxxxx';
+$config['api_secret'] = 'xxxxxx';
+```
 
 Open controller/nexmo.php and modified the following changes for sending message
 
-    $from = 'xxxxxxxxxx';
-    $to = 'xxxxxxxxxxxx';
-    $message = array(
-        'text' => 'test message'
-    );
+```php
+$from = 'xxxxxxxxxx';
+$to = 'xxxxxxxxxxxx';
+$message = array(
+    'text' => 'test message'
+);
+```
 
 Open browser and load the following URL
 
