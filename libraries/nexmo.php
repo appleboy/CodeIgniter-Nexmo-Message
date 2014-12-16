@@ -416,6 +416,36 @@ class nexmo
     }
 
     /**
+     * Verify
+     * The Verification request API call enables you to request Nexmo to kick off the verification process for the number you provided. Nexmo will handle all the retries and PIN generation.
+     * https://docs.nexmo.com/index.php/verify/verify
+     *
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function verify_request($to, $brand, $sender_id = null, $code_length = null, $lg = null, $require_type = null)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/".$this->_format),
+        );
+
+        $params = array(
+            'number' => $to,
+            'brand' => $brand,
+            'sender_id' => $sender_id,
+            'code_length' => $code_length,
+            'lg' => $lg,
+            'require_type' => $require_type
+        );
+
+        return $this->request('get', self::$rejections_url, $params, $options);
+    }
+
+    /**
      * request data
      * Connect to Nexmo URL API
      *
