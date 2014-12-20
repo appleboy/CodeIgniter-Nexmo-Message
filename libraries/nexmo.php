@@ -26,10 +26,12 @@ class nexmo
     public static $messages_url = 'http://rest.nexmo.com/search/messages';
     public static $rejections_url = 'http://rest.nexmo.com/search/rejections';
 
+    public static $verify_base_url = 'https://api.nexmo.com/verify';
+
     private $_url_array = array('balance_url', 'pricing_url', 'account_url',
                            'number_url', 'top_up_url', 'search_url', 'buy_url',
                            'update_url', 'cancel_url', 'message_url', 'messages_url',
-                           'rejections_url', );
+                           'rejections_url',);
 
     // codeigniter instance
     private $_ci;
@@ -120,7 +122,6 @@ class nexmo
             'to' => $to,
         );
         $post = array_merge($post, $data);
-
         $params = array_merge(array('api_key' => $this->_api_key, 'api_secret' => $this->_api_secret), $post);
         $url = ($this->_format == 'json') ? self::http_json_url : self::http_xml_url;
 
@@ -412,6 +413,8 @@ class nexmo
             'to' => $to,
         );
 
+        var_dump(self::$rejections_url);
+
         return $this->request('get', self::$rejections_url, $params, $options);
     }
 
@@ -442,7 +445,60 @@ class nexmo
             'require_type' => $require_type
         );
 
-        return $this->request('get', self::$rejections_url, $params, $options);
+        return $this->request('get', $this->verify_url($params), null, $options);
+    }
+
+    /**
+     * Verify Check
+     * The Verification Check API call enables you to check whether the PIN code you got from your end user matches the one Nexmo sent.
+     * https://docs.nexmo.com/index.php/verify/check
+     *
+     * @param string
+     * @param string
+     * @param string
+     * return json or xml
+     */
+    public function verify_check($request_id, $code, $ip_address = null)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/".$this->_format),
+        );
+
+        $params = array(
+            'request_id' => $request_id,
+            'code' => $code,
+            'ip_address' => $ip_address
+        );
+
+        return $this->request('get', $this->verify_url($params, "check"), null, $options);
+    }
+
+    /**
+     * Verify Search
+     * The Verification Search API call enables you to get the status and many other attributes of a verification request even if the verification is still in progress.
+     * https://docs.nexmo.com/index.php/verify/search
+     *
+     * @param array
+     * return json or xml
+     */
+    public function verify_search($request_ids)
+    {
+        $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/".$this->_format),
+        );
+        if(count($request_ids) === 1){
+            $params = array(
+                "request_id" => $request_ids
+            );
+            $url = $this->verify_url($params, "search");
+        }else{
+            
+        }
+        $url = $this->verify_url(array(), "search");
+        foreach($request_ids as $row){
+            $url .= "&request_ids=" . $row;
+        }
+        return $this->request('get', $url, null, $options);
     }
 
     /**
@@ -584,6 +640,30 @@ class nexmo
         echo '<pre>';
         var_dump($msg);
         echo '</pre>';
+    }
+
+    /**
+     *
+     * output verify base url
+     *
+     * @param string
+     */
+    public function verify_url($params, $type = "request"){
+        switch($type){
+            case 'check':
+                $type = "check/";
+                break;
+            case 'search':
+                $type = "search/";
+                break;
+            case 'request':
+            default:
+                $type = null;
+                break;
+        }
+        $params["api_key"] = $this->_api_key;
+        $params['api_secret'] = $this->_api_secret;
+        return self::$verify_base_url . "/" . $type . $this->_format . "?" . http_build_query($params);
     }
 }
 
