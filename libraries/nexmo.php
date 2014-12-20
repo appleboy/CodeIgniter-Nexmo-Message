@@ -413,8 +413,6 @@ class nexmo
             'to' => $to,
         );
 
-        var_dump(self::$rejections_url);
-
         return $this->request('get', self::$rejections_url, $params, $options);
     }
 
