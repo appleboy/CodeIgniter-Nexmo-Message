@@ -19,7 +19,7 @@ Please vist https://www.nexmo.com/tour/
 You can install via http://getsparks.org/packages/Nexmo-SMS-Message/versions/HEAD/show
 
 ```bash
-$ php tools/spark install -v1.0.4 Nexmo-SMS-Message
+$ php tools/spark install -v1.0.5 Nexmo-SMS-Message
 ```
 
 or referrer the following steps.
