@@ -167,7 +167,11 @@ class example extends CI_Controller
         // ********************************Insight - Request*********************************
         $number = "xxxxxxxxxxx";
         $callback_url = "xxxxxxxxxxxxxxxxx";
-        $response = $this->nexmo->insight_request($number, $callback_url);
+        $callback_timeout = null; //Optional. The maximum amount of time to get a response to your callback URL (default 30 seconds)
+        $callback_method = null; //Optional. The HTTP method for your error_url. Must be GET (default) or POST.
+        $features = null; //Optional. A set of features to check, using a comma-separated values.
+        $client_ref = null; //Optional. Include any reference string for your reference. Useful for your internal reports (40 characters max).
+        $response = $this->nexmo->insight_request($number, $callback_url, $callback_timeout, $callback_method, $features, $client_ref, );
         echo "<h1>Insight - Request</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";

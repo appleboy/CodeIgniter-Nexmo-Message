@@ -510,10 +510,11 @@ class nexmo
      * @param string
      * @param string
      * @param string
+     * @param integer
      * @param string
      * return json or xml
      */
-    public function insight_request($number, $callback, $features = null, $client_ref = null, $callback_timeout = null, $callback_method = null)
+    public function insight_request($number, $callback, $callback_timeout = null, $callback_method = null, $features = null, $client_ref = null)
     {
        $options = array(
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
