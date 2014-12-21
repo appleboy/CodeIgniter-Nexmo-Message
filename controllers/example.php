@@ -13,7 +13,7 @@ class example extends CI_Controller
         $this->load->library('nexmo');
         // set response format: xml or json, default json
         $this->nexmo->set_format('json');
-
+        /*
         // **********************************Text Message*************************************
         $from = 'xxxxxxxx';
         $to = 'xxxxxxx';
@@ -26,7 +26,7 @@ class example extends CI_Controller
         echo "<h3>Response Code: ".$this->nexmo->get_http_status()."</h3>";
 
         // *********************************Binary Message**************************************
-        /*
+        
         $from = 'xxxxxxxx';
         $to = 'xxxxxxxxxx';
         $message = array(
@@ -132,6 +132,35 @@ class example extends CI_Controller
         // ********************************Search - Rejections*********************************
         $response = $this->nexmo->search_rejections('2013-01-23', 'xxxxxxxxxxxxx');
         echo "<h1>Search - Message</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+        // ********************************Verify - Request*********************************
+        $to = '447478717821';
+        $brand = 'Testing';
+        $sender_id = 'Luke'; //optional
+        $code_length = '4'; //optional 4 or 6
+        $lg = 'en-us'; //optional nexmo default en-us https://docs.nexmo.com/index.php/voice-api/text-to-speech#languages
+        $require_type = null; //optional enabled on request by nexmo
+        $response = $this->nexmo->verify_request($to, $brand, $sender_id, $code_length, $lg, $require_type);
+        echo "<h1>Verify - Request</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+        
+        // ********************************Verify - Check*********************************
+        $request_id = 'xxxxxxxxxx';
+        $code = 'xxxxxxxxxxxxxxxxxx';
+        $ip_address = 'xxxxxxxxxxx'; //optional
+        $response = $this->nexmo->verify_check($request_id, $code, $ip_address);
+        echo "<h1>Verify - Request</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+
+        // ********************************Verify - Search*********************************
+        $request_ids = array('xxxxxxxx'); //single request id
+        //$request_ids = array('xxxxxxxx', 'xxxxxxxx'); //multiple request ids
+        $response = $this->nexmo->verify_search($request_ids);
+        echo "<h1>Verify - Request</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
         */
