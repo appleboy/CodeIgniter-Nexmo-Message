@@ -59,43 +59,42 @@ Please vist [API documentation](https://docs.nexmo.com/) first
 
 Date: 2014-12-21 (Developer API)
 
-* Insight: Request
+* [Insight: Request](https://docs.nexmo.com/index.php/number-insight/request)
 
 Added by @lukeprentice202
 
 Date: 2014-12-16 (Developer API)
 
-* Verify: Request
-* Verify: Check
-* Verify: Search
+* [Verify: Request](https://docs.nexmo.com/index.php/verify/verify)
+* [Verify: Check](https://docs.nexmo.com/index.php/verify/check)
+* [Verify: Search](https://docs.nexmo.com/index.php/verify/search)
 
 Added by @lukeprentice202
 
 Date: 2013-01-23 (Developer API)
 
-* Account: Top-up
-* Number: Update
-* Search: Message
-* Search: Messages
-* Search: Rejections
+* [Account: Top-up](https://docs.nexmo.com/index.php/developer-api/account-top-up)
+* [Number: Update](https://docs.nexmo.com/index.php/developer-api/number-update)
+* [Search: Message](https://docs.nexmo.com/index.php/developer-api/search-message)
+* [Search: Messages](https://docs.nexmo.com/index.php/developer-api/search-messages)
+* [Search: Rejections](https://docs.nexmo.com/index.php/developer-api/search-rejections)
 
 Date: 2011-11-19 (Developer API)
 
-* Account: Get Balance
-* Account: Get Pricing
-* Account: Settings
-* Account: Numbers
-* Number: Search
-* Number: Buy
-* Number: Cancel
+* [Account: Get Balance](https://docs.nexmo.com/index.php/developer-api/account-get-balance)
+* [Account: Get Pricing](https://docs.nexmo.com/index.php/developer-api/account-pricing)
+* [Account: Settings](https://docs.nexmo.com/index.php/developer-api/account-settings)
+* [Account: Numbers](https://docs.nexmo.com/index.php/developer-api/account-numbers)
+* [Number: Search](https://docs.nexmo.com/index.php/developer-api/number-search)
+* [Number: Buy](https://docs.nexmo.com/index.php/developer-api/number-buy)
+* [Number: Cancel](https://docs.nexmo.com/index.php/developer-api/number-cancel)
 
 Date: 2011-10-07 (Messaging References)
 
-* Send a Message
-* Send Binary Message
-* Send WAP Push Message
+* [Send a Message](https://docs.nexmo.com/index.php/sms-api/send-message)
+* [Send Binary Message](https://docs.nexmo.com/index.php/how-to/send-binary-message)
+* [Send WAP Push Message](https://docs.nexmo.com/index.php/how-to/send-wap-push-message)
 
 # Copyright
 
 Copyright (C) 2011-2014 Bo-Yi Wu ( appleboy AT gmail.com )
-
