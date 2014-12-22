@@ -57,6 +57,12 @@ Open browser and load the following URL
 
 Please vist [API documentation](https://docs.nexmo.com/) first
 
+Date: 2014-12-21 (Developer API)
+
+* Insight: Request
+
+Added by @lukeprentice202
+
 Date: 2014-12-16 (Developer API)
 
 * Verify: Request

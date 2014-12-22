@@ -25,6 +25,7 @@ class nexmo
     public static $message_url = 'http://rest.nexmo.com/search/message';
     public static $messages_url = 'http://rest.nexmo.com/search/messages';
     public static $rejections_url = 'http://rest.nexmo.com/search/rejections';
+    public static $insight_url = 'https://rest.nexmo.com/ni';
 
     public static $verify_base_url = 'https://api.nexmo.com/verify';
 
@@ -498,6 +499,39 @@ class nexmo
         }
 
         return $this->request('get', $url, null, $options);
+    }
+
+    /**
+     * Number Insight
+     * Number Insight API allows you to retrieve information such as number validity, number type, number presence, current carrier, porting and roaming for a given number. These customer identifiers can be used by your application/business for decision making.
+     * https://docs.nexmo.com/index.php/number-insight
+     *
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param integer
+     * @param string
+     * return json or xml
+     */
+    public function insight_request($number, $callback, $callback_timeout = null, $callback_method = null, $features = null, $client_ref = null)
+    {
+       $options = array(
+            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        );
+
+        $params = array(
+            'api_key'           => $this->_api_key,
+            'api_secret'        => $this->_api_secret,
+            'number'            => $number,
+            'features'          => $features,
+            'callback'          => $callback,
+            'callback_timeout'  => $callback_timeout,
+            'callback_method'   => $callback_method,
+            'client_ref'        => $client_ref
+        );
+
+        return $this->request('get', self::$insight_url . '/' . $this->_format, $params, $options);
     }
 
     /**

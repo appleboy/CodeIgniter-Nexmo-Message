@@ -136,9 +136,9 @@ class example extends CI_Controller
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
         // ********************************Verify - Request*********************************
-        $to = '447478717821';
-        $brand = 'Testing';
-        $sender_id = 'Luke'; //optional
+        $to = 'xxxxxxxxxxx';
+        $brand = 'xxxx';
+        $sender_id = 'xxxx'; //optional
         $code_length = '4'; //optional 4 or 6
         $lg = 'en-us'; //optional nexmo default en-us https://docs.nexmo.com/index.php/voice-api/text-to-speech#languages
         $require_type = null; //optional enabled on request by nexmo
@@ -152,7 +152,7 @@ class example extends CI_Controller
         $code = 'xxxxxxxxxxxxxxxxxx';
         $ip_address = 'xxxxxxxxxxx'; //optional
         $response = $this->nexmo->verify_check($request_id, $code, $ip_address);
-        echo "<h1>Verify - Request</h1>";
+        echo "<h1>Verify - Check</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
 
@@ -160,7 +160,19 @@ class example extends CI_Controller
         $request_ids = array('xxxxxxxx'); //single request id
         //$request_ids = array('xxxxxxxx', 'xxxxxxxx'); //multiple request ids
         $response = $this->nexmo->verify_search($request_ids);
-        echo "<h1>Verify - Request</h1>";
+        echo "<h1>Verify - Search</h1>";
+        $this->nexmo->d_print($response);
+        echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
+        
+        // ********************************Insight - Request*********************************
+        $number = "xxxxxxxxxxx";
+        $callback_url = "xxxxxxxxxxxxxxxxx";
+        $callback_timeout = null; //Optional. The maximum amount of time to get a response to your callback URL (default 30 seconds)
+        $callback_method = null; //Optional. The HTTP method for your error_url. Must be GET (default) or POST.
+        $features = null; //Optional. A set of features to check, using a comma-separated values.
+        $client_ref = null; //Optional. Include any reference string for your reference. Useful for your internal reports (40 characters max).
+        $response = $this->nexmo->insight_request($number, $callback_url, $callback_timeout, $callback_method, $features, $client_ref, );
+        echo "<h1>Insight - Request</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
         */
