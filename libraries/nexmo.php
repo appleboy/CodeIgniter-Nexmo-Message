@@ -41,6 +41,8 @@ class nexmo
     private $_api_key;
     private $_api_secret;
     private $_format = 'json';
+    //either assoc for (assoc array) or class for ( stdClass )
+    private $_json_format = 'assoc';
 
     // debug mode
     private $_enable_debug = false;
@@ -611,6 +613,20 @@ class nexmo
 
         return $this;
     }
+    
+    /**
+     * Set the json return format
+     * 
+     * @param       String  $   JSON format, assoc or class for ASSOC ARRAY and stdClass respectively
+     * 
+     * @return      NULL
+     */ 
+    public function set_json_format( $format = 'assoc' )
+    {
+        if( $format !== 'assoc' and $format !== 'class'  )
+            $format = 'assoc';
+        $this->_json_format = $format;
+    }
 
     /**
      *
@@ -626,7 +642,10 @@ class nexmo
             break;
             case 'json':
             default:
-                $response_obj = json_decode($this->_http_response);
+            {
+                $is_assoc = ( $this->_json_format === 'assoc' ) ? TRUE : FALSE;
+                $response_obj = json_decode($this->_http_response , $is_assoc );
+            }
         }
 
         return $response_obj;
