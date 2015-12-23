@@ -250,13 +250,13 @@ class nexmo
             CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
         );
 
-        self::$search_url = self::$search_url . '/' . $country_code;
+        $search_url = self::$search_url . '/' . $country_code;
 
         if (isset($pattern)) {
             $params = array("pattern" => $params);
         }
 
-        return $this->request('get', self::$search_url, $params, $options);
+        return $this->request('get', $search_url, $params, $options);
     }
 
     /**
