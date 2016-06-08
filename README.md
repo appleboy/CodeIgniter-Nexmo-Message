@@ -11,7 +11,7 @@ Please vist https://www.nexmo.com/tour/
 # Requirements
 
 * CodeIgniter 2.0.0+
-* PHP 5.2.0+
+* PHP 5.4.0+
 * PHP extension: openssl, pcre, json, xml, curl
 
 # Usage
