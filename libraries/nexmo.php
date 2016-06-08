@@ -3,7 +3,7 @@
 /*
  * Nexmo Message Library
  * Class Nexmo Message handles the methods and properties of sending an SMS message.
- * URL: http://www.nexmo.com/documentation/index.html
+ * URL: https://docs.nexmo.com/
  * Author: Bo-Yi Wu <appleboy.tw@gmail.com>
  * Date: 2011-11-07
  */
@@ -13,26 +13,26 @@ class nexmo
     // using https by default
     const http_xml_url = 'https://rest.nexmo.com/sms/xml';
     const http_json_url = 'https://rest.nexmo.com/sms/json';
-    public static $balance_url = 'http://rest.nexmo.com/account/get-balance';
-    public static $pricing_url = 'http://rest.nexmo.com/account/get-pricing/outbound';
-    public static $account_url = 'http://rest.nexmo.com/account/settings';
-    public static $number_url = 'http://rest.nexmo.com/account/numbers';
-    public static $top_up_url = 'http://rest.nexmo.com/account/top-up';
-    public static $search_url = 'http://rest.nexmo.com/number/search';
-    public static $buy_url = 'http://rest.nexmo.com/number/buy';
-    public static $cancel_url = 'http://rest.nexmo.com/number/cancel';
-    public static $update_url = 'http://rest.nexmo.com/number/update';
-    public static $message_url = 'http://rest.nexmo.com/search/message';
-    public static $messages_url = 'http://rest.nexmo.com/search/messages';
-    public static $rejections_url = 'http://rest.nexmo.com/search/rejections';
+    public static $balance_url = 'https://rest.nexmo.com/account/get-balance';
+    public static $pricing_url = 'https://rest.nexmo.com/account/get-pricing/outbound';
+    public static $account_url = 'https://rest.nexmo.com/account/settings';
+    public static $number_url = 'https://rest.nexmo.com/account/numbers';
+    public static $top_up_url = 'https://rest.nexmo.com/account/top-up';
+    public static $search_url = 'https://rest.nexmo.com/number/search';
+    public static $buy_url = 'https://rest.nexmo.com/number/buy';
+    public static $cancel_url = 'https://rest.nexmo.com/number/cancel';
+    public static $update_url = 'https://rest.nexmo.com/number/update';
+    public static $message_url = 'https://rest.nexmo.com/search/message';
+    public static $messages_url = 'https://rest.nexmo.com/search/messages';
+    public static $rejections_url = 'https://rest.nexmo.com/search/rejections';
     public static $insight_url = 'https://rest.nexmo.com/ni';
 
     public static $verify_base_url = 'https://api.nexmo.com/verify';
 
-    private $_url_array = array('balance_url', 'pricing_url', 'account_url',
+    private $_url_array = ['balance_url', 'pricing_url', 'account_url',
                            'number_url', 'top_up_url', 'search_url', 'buy_url',
                            'update_url', 'cancel_url', 'message_url', 'messages_url',
-                           'rejections_url',);
+                           'rejections_url',];
 
     // codeigniter instance
     private $_ci;
@@ -58,7 +58,7 @@ class nexmo
 
     // curl init session
     protected $session;
-    protected $options = array();
+    protected $options = [];
     protected $url;
 
     public function __construct()
@@ -97,42 +97,42 @@ class nexmo
         mb_http_output("UTF-8");
         switch ($type) {
             case 'text':
-                $data = array(
+                $data = [
                     'text' => (isset($message['text'])) ? $message['text'] : '',
                     'type' => (isset($message['type'])) ? $message['type'] : 'unicode',
-                );
+                ];
             break;
             case 'binary':
-                $data = array(
+                $data = [
                     'body' => (isset($message['body'])) ? bin2hex($message['body']) : '',
                     'udh'  => (isset($message['udh'])) ? bin2hex($message['udh']) : '',
                     'type' => (isset($message['type'])) ? $message['type'] : 'binary',
-                );
+                ];
             break;
             case 'wappush':
-                $data = array(
+                $data = [
                     'title'    => (isset($message['title'])) ? $message['title'] : '',
                     'url'      => (isset($message['url'])) ? $message['url'] : '',
                     'type'     => (isset($message['type'])) ? $message['type'] : 'wappush',
                     'validity' => (isset($message['validity'])) ? $message['validity'] : 86400000,
-                );
+                ];
             break;
         }
 
         // handle data
-        $post = array(
+        $post = [
             'from' => $from,
             'to'   => $to,
-        );
+        ];
         $post = array_merge($post, $data);
-        $params = array_merge(array('api_key' => $this->_api_key, 'api_secret' => $this->_api_secret), $post);
+        $params = array_merge(['api_key' => $this->_api_key, 'api_secret' => $this->_api_secret], $post);
         $url = ($this->_format === 'json') ? self::http_json_url : self::http_xml_url;
 
-        $options = array(
+        $options = [
             CURLOPT_POST           => TRUE,
             CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_SSL_VERIFYPEER => 0,
-        );
+        ];
 
         return $this->request('post', $url, $params, $options);
     }
@@ -145,9 +145,9 @@ class nexmo
      */
     public function get_balance()
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         return $this->request('get', self::$balance_url, null, $options);
     }
@@ -161,9 +161,9 @@ class nexmo
      */
     public function get_pricing($country_code = 'TW')
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         self::$pricing_url = self::$pricing_url . '/' . $country_code;
 
@@ -181,10 +181,10 @@ class nexmo
      */
     public function get_account_settings($newSecret = null, $moCallBackUrl = null, $drCallBackUrl = null)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
             CURLOPT_POST       => TRUE,
-        );
+        ];
 
         if (isset($newSecret)) {
             $params['newSecret'] = $newSecret;
@@ -207,9 +207,9 @@ class nexmo
      */
     public function get_numbers()
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         return $this->request('get', self::$number_url, null, $options);
     }
@@ -223,9 +223,9 @@ class nexmo
      */
     public function get_top_up($trx = null)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         if (isset($trx)) {
             $params['trx'] = $trx;
@@ -246,14 +246,14 @@ class nexmo
     {
         $params = null;
 
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         $search_url = self::$search_url . '/' . $country_code;
 
         if (isset($pattern)) {
-            $params = array("pattern" => $params);
+            $params = ["pattern" => $params];
         }
 
         return $this->request('get', $search_url, $params, $options);
@@ -274,10 +274,10 @@ class nexmo
             exit();
         }
 
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
             CURLOPT_POST       => TRUE,
-        );
+        ];
 
         self::$buy_url = self::$buy_url . '/' . $country_code . '/' . $msisdn;
 
@@ -298,10 +298,10 @@ class nexmo
             echo('msisdn must be required');
             exit();
         }
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
             CURLOPT_POST       => TRUE,
-        );
+        ];
 
         $_url = self::$cancel_url . '/' . $country_code . '/' . $msisdn;
 
@@ -317,19 +317,19 @@ class nexmo
      * @param array
      * return json or xml
      */
-    public function get_number_update($country_code = 'TW', $msisdn = null, $params = array())
+    public function get_number_update($country_code = 'TW', $msisdn = null, $params = [])
     {
         if (!isset($msisdn)) {
             echo('msisdn must be required');
             exit();
         }
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
             CURLOPT_POST       => TRUE,
-        );
+        ];
 
         if (!is_array($params) or empty($params)) {
-            $params = array();
+            $params = [];
         }
 
         $_url = self::$update_url . '/' . $country_code . '/' . $msisdn . '?' . http_build_query($params);
@@ -352,9 +352,9 @@ class nexmo
             echo('Your message id must be required');
             exit();
         }
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         $_url = self::$message_url . '/' . $id;
 
@@ -372,11 +372,11 @@ class nexmo
      * @param string
      * return json or xml
      */
-    public function search_messages($ids = array(), $date = null, $to = null)
+    public function search_messages($ids = [], $date = null, $to = null)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         if (isset($ids) and !empty($ids) and is_array($ids)) {
             $url_string = '';
@@ -387,10 +387,10 @@ class nexmo
         }
 
         if (isset($date) and isset($to)) {
-            $params = array(
+            $params = [
                 'date' => $date,
                 'to'   => $to,
-            );
+            ];
             $_url = self::$messages_url;
         }
 
@@ -407,14 +407,14 @@ class nexmo
      */
     public function search_rejections($date = null, $to = null)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
-        $params = array(
+        $params = [
             'date' => $date,
             'to'   => $to,
-        );
+        ];
 
         return $this->request('get', self::$rejections_url, $params, $options);
     }
@@ -433,18 +433,18 @@ class nexmo
      */
     public function verify_request($to, $brand, $sender_id = null, $code_length = null, $lg = null, $require_type = null)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
-        $params = array(
+        $params = [
             'number'       => $to,
             'brand'        => $brand,
             'sender_id'    => $sender_id,
             'code_length'  => $code_length,
             'lg'           => $lg,
             'require_type' => $require_type,
-        );
+        ];
 
         return $this->request('get', $this->verify_url($params), null, $options);
     }
@@ -461,15 +461,15 @@ class nexmo
      */
     public function verify_check($request_id, $code, $ip_address = null)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
-        $params = array(
+        $params = [
             'request_id' => $request_id,
             'code'       => $code,
             'ip_address' => $ip_address,
-        );
+        ];
 
         return $this->request('get', $this->verify_url($params, "check"), null, $options);
     }
@@ -484,18 +484,18 @@ class nexmo
      */
     public function verify_search($request_ids)
     {
-        $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
         if (count($request_ids) === 1) {
-            $params = array(
+            $params = [
                 "request_id" => $request_ids,
-            );
+            ];
             $url = $this->verify_url($params, "search");
         }
 
-        $url = $this->verify_url(array(), "search");
+        $url = $this->verify_url([], "search");
         foreach ($request_ids as $row) {
             $url .= "&request_ids=" . $row;
         }
@@ -518,11 +518,11 @@ class nexmo
      */
     public function insight_request($number, $callback, $callback_timeout = null, $callback_method = null, $features = null, $client_ref = null)
     {
-       $options = array(
-            CURLOPT_HTTPHEADER => array("Accept: application/" . $this->_format),
-        );
+        $options = [
+            CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
+        ];
 
-        $params = array(
+        $params = [
             'api_key'           => $this->_api_key,
             'api_secret'        => $this->_api_secret,
             'number'            => $number,
@@ -530,8 +530,8 @@ class nexmo
             'callback'          => $callback,
             'callback_timeout'  => $callback_timeout,
             'callback_method'   => $callback_method,
-            'client_ref'        => $client_ref
-        );
+            'client_ref'        => $client_ref,
+        ];
 
         return $this->request('get', self::$insight_url . '/' . $this->_format, $params, $options);
     }
@@ -543,7 +543,7 @@ class nexmo
      * @param array
      * return string
      */
-    protected function request($method, $url, $params = array(), $options = array())
+    protected function request($method, $url, $params = [], $options = [])
     {
         if ($method === 'get') {
             $uri = $url . ($params ? '?' . http_build_query($params) : '');
@@ -567,7 +567,7 @@ class nexmo
         return $this->execute();
     }
 
-    protected function options($options = array())
+    protected function options($options = [])
     {
         // Set all options provided
         curl_setopt_array($this->session, $options);
@@ -613,18 +613,19 @@ class nexmo
 
         return $this;
     }
-    
+
     /**
      * Set the json return format
-     * 
+     *
      * @param       String  $   JSON format, assoc or class for ASSOC ARRAY and stdClass respectively
-     * 
+     *
      * @return      NULL
-     */ 
-    public function set_json_format( $format = 'assoc' )
+     */
+    public function set_json_format($format = 'assoc')
     {
-        if( $format !== 'assoc' and $format !== 'class'  )
+        if ($format !== 'assoc' and $format !== 'class') {
             $format = 'assoc';
+        }
         $this->_json_format = $format;
     }
 
@@ -643,8 +644,8 @@ class nexmo
             case 'json':
             default:
             {
-                $is_assoc = ( $this->_json_format === 'assoc' ) ? TRUE : FALSE;
-                $response_obj = json_decode($this->_http_response , $is_assoc );
+                $is_assoc = ($this->_json_format === 'assoc') ? TRUE : FALSE;
+                $response_obj = json_decode($this->_http_response, $is_assoc);
             }
         }
 
