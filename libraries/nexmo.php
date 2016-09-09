@@ -429,9 +429,11 @@ class nexmo
      * @param string
      * @param string
      * @param string
+     * @param string
+     * @param int
      * return json or xml
      */
-    public function verify_request($to, $brand, $sender_id = null, $code_length = null, $lg = null, $require_type = null)
+    public function verify_request($to, $brand, $sender_id = null, $code_length = null, $lg = null, $require_type = null, $pin_expiry = 300)
     {
         $options = [
             CURLOPT_HTTPHEADER => ["Accept: application/" . $this->_format],
@@ -444,6 +446,7 @@ class nexmo
             'code_length'  => $code_length,
             'lg'           => $lg,
             'require_type' => $require_type,
+            'pin_expiry'   => $pin_expiry,
         ];
 
         return $this->request('get', $this->verify_url($params), null, $options);
