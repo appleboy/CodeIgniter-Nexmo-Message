@@ -142,7 +142,8 @@ class example extends CI_Controller
         $code_length = '4'; //optional 4 or 6
         $lg = 'en-us'; //optional nexmo default en-us https://docs.nexmo.com/index.php/voice-api/text-to-speech#languages
         $require_type = null; //optional enabled on request by nexmo
-        $response = $this->nexmo->verify_request($to, $brand, $sender_id, $code_length, $lg, $require_type);
+        $pin_expiry = 300;
+        $response = $this->nexmo->verify_request($to, $brand, $sender_id, $code_length, $lg, $require_type, $pin_expiry);
         echo "<h1>Verify - Request</h1>";
         $this->nexmo->d_print($response);
         echo "<h3>Response Code: " . $this->nexmo->get_http_status() . "</h3>";
